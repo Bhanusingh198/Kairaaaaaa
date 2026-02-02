@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Are you okay? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffd1dc 50%, #ffccd5 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* Floating hearts background */
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff69b4;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            max-width: 90vw;
+            padding: 20px;
+        }
+
+        .question {
+            font-size: clamp(28px, 10vw, 56px);
+            color: #ff1493;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .name {
+            font-size: clamp(24px, 8vw, 48px);
+            color: #ff69b4;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+            animation: bounceName 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes bounceName {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 15;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: clamp(18px, 5vw, 24px);
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255,20,147,0.4);
+            position: relative;
+            min-width: 120px;
+        }
+
+        .yes-btn {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(255,20,147,0.6);
+        }
+
+        .no-btn {
+            background: linear-gradient(45deg, #ff6b9d, #c44569);
+            color: white;
+            transition: none;
+            position: relative;
+        }
+
+        .no-btn:hover {
+            transform: none !important;
+        }
+
+        /* Yayee message - COMPLETELY HIDDEN initially */
+        .yayee {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(48px, 16vw, 96px);
+            color: #ff1493;
+            text-shadow: 3px 3px 6px rgba(255,255,255,0.9);
+            opacity: 0;
+            visibility: hidden; /* COMPLETELY HIDDEN */
+            position: fixed;
+            z-index: 100;
+            pointer-events: none;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .yayee.show {
+            visibility: visible;
+            opacity: 1;
+            animation: celebrate 1.5s ease forwards;
+        }
+
+        @keyframes celebrate {
+            0% { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0) rotate(-360deg); 
+            }
+            50% { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1.3) rotate(10deg); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1) rotate(0deg); 
+            }
+        }
+
+        /* Hide container when yayee shows */
+        .container.hidden {
+            display: none !important;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 480px) {
+            .buttons { flex-direction: column; align-items: center; }
+            button { width: 80%; max-width: 250px; }
+            .question { margin-bottom: 15px !important; }
+        }
+
+        /* Your local image */
+        .kaira-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 5px solid rgba(255,20,147,0.6);
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(255,20,147,0.4);
+            animation: bounce 2s ease-in-out infinite;
+            display: block;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts -->
+    <div class="heart" style="left: 10%; animation-delay: 0s;">💖</div>
+    <div class="heart" style="left: 20%; animation-delay: 1s;">💕</div>
+    <div class="heart" style="left: 80%; animation-delay: 2s;">💗</div>
+    <div class="heart" style="right: 10%; animation-delay: 3s;">💝</div>
+    <div class="heart" style="right: 20%; animation-delay: 4s; font-size: 16px;">💓</div>
+
+    <div class="container" id="mainContainer">
+        <!-- ADD YOUR PHOTO HERE - Replace 'your-photo.jpg' with your actual image filename -->
+        <img src="your-photo.jpg" alt="💕" class="kaira-photo" id="kairaPhoto">
+        
+        <div class="question">Are you okay?</div>
+        <div class="name">Kairaaaa Love? 💕</div>
+        
+        <div class="buttons">
+            <button class="yes-btn" onclick="yesClicked()">Yes 😊</button>
+            <button class="no-btn" id="noButton">No 😢</button>
+        </div>
+    </div>
+
+    <!-- Yayee message - HIDDEN until Yes clicked -->
+    <div class="yayee" id="yayeeMsg">Yayee!<br>🥰💕</div>
+
+    <script>
+        const noButton = document.getElementById('noButton');
+        const mainContainer = document.getElementById('mainContainer');
+        const yayeeMsg = document.getElementById('yayeeMsg');
+        const kairaPhoto = document.getElementById('kairaPhoto');
+
+        // No button moves to RANDOM position when mouse gets close
+        document.addEventListener('mousemove', function(e) {
+            const rect = noButton.getBoundingClientRect();
+            const distance = Math.hypot(
+                e.clientX - (rect.left + rect.width/2),
+                e.clientY - (rect.top + rect.height/2)
+            );
+            
+            // Move to random position if mouse is close (within 100px)
+            if (distance < 100) {
+                const randomX = Math.random() * (window.innerWidth - noButton.offsetWidth - 20);
+                const randomY = Math.random() * (window.innerHeight - noButton.offsetHeight - 20);
+                
+                noButton.style.position = 'fixed';
+                noButton.style.left = randomX + 'px';
+                noButton.style.top = randomY + 'px';
+                noButton.style.transform = 'none';
+                noButton.style.zIndex = '20';
+            }
+        });
+
+        // No button click - moves to another random position
+        noButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const randomX = Math.random() * (window.innerWidth - noButton.offsetWidth - 20);
+            const randomY = Math.random() * (window.innerHeight - noButton.offsetHeight - 20);
+            
+            noButton.style.left = randomX + 'px';
+            noButton.style.top = randomY + 'px';
+        });
+
+        function yesClicked() {
+            // Hide main content
+            mainContainer.classList.add('hidden');
+            
+            // Show Yayee with celebration
+            yayeeMsg.classList.add('show');
+            
+            // Celebration effects
+            document.querySelectorAll('.heart').forEach(heart => {
+                heart.style.fontSize = '30px';
+                heart.style.animationDuration = '1s';
+            });
+        }
+
+        // Mobile touch support for Yes button
+        document.querySelector('.yes-btn').addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            yesClicked();
+        });
+
+        // Prevent zoom on mobile
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html>
